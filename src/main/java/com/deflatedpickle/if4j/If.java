@@ -10,7 +10,7 @@ class If {
      * @see Object
      */
     public Object if4j(Object value) {
-    	AtomicBoolean aBoolean;
+		Object aBoolean;
 		aBoolean = new AtomicBoolean(true);
 
         switch (value.getClass().getSimpleName()) {
@@ -18,11 +18,11 @@ class If {
             	Object result = ifBoolean(value);
 
             	if (result instanceof Boolean) {
-					aBoolean.lazySet((Boolean) result);
+					((AtomicBoolean) aBoolean).lazySet((Boolean) result);
 				}
                 break;
 			default:
-				aBoolean.set(false);
+				aBoolean = false;
 				break;
         }
 
@@ -30,8 +30,6 @@ class If {
     }
 
     public Object ifBoolean(Object value) {
-    	assert value instanceof Boolean;
-
     	if ((Boolean) equalsButBetter(castToBoolean(value), true) && !(Boolean) equalsButBetter(castToBoolean(value), false)
 				&& (Boolean) equalsButBetter(castToBoolean(value), Boolean.TRUE) && !(Boolean) equalsButBetter(castToBoolean(value), Boolean.FALSE)) {
 			return true;
@@ -42,12 +40,12 @@ class If {
 	}
 
 	public Object equalsButBetter(Object first, Object second) {
-		AtomicBoolean aBoolean;
+		Object aBoolean;
 		aBoolean = new AtomicBoolean(true);
 
-		aBoolean.set(castToBoolean(first) == (Boolean) second);
+		((AtomicBoolean) aBoolean).set(castToBoolean(first) == (Boolean) second);
 
-		return aBoolean.get();
+		return ((AtomicBoolean) aBoolean).get();
 	}
 
 	public boolean castToBoolean(Object value) {
